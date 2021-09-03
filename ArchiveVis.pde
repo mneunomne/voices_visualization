@@ -22,9 +22,13 @@ class Archive {
     // create .json points for each word in database
     for (int i = 0; i < audios.size(); i++) {    
       JSONObject audio = audios.getJSONObject(i);
-      Word word = new Word(audio);
-      word.load();
-      words.add(word);
+      String text = audio.getString("text");
+      // create words only for audio with text
+      if (text.length() > 0) {
+        Word word = new Word(audio);
+        word.load();
+        words.add(word);
+      }
     }
     
     // create the moving points for each user
@@ -75,13 +79,13 @@ class Archive {
 
   void debug () {
     int x = 20;
-    int y = 80;
-    for (int i = 0; i < 15; i++) {
+    int y = 20;
+    for (int i = 0; i < 20; i++) {
       Word w = words.get(i);
       translate(x, y);
       w.draw(1);
       translate(-x, -y);
-      y+=20;
+      y+=30;
       if (y > height - 10) {
         y = 80;
         x+=200;

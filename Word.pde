@@ -39,7 +39,7 @@ class Word {
   void draw (float scale) {
     if (!isLoaded) return; 
     for (PVector point : points) {
-      point(point.x * scale + (random(5) - 10), point.y * scale + (random(5) - 10));
+      point(point.x * scale, point.y * scale);
     }
   }
 
