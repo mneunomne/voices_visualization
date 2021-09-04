@@ -83,7 +83,7 @@ class Archive {
     for (int i = 0; i < 20; i++) {
       Word w = words.get(i);
       translate(x, y);
-      w.draw(1);
+      w.drawDebug(1);
       translate(-x, -y);
       y+=30;
       if (y > height - 10) {

@@ -23,6 +23,8 @@ void setup () {
   size(displayWidth, displayHeight, P3D);
   // size(800, 600, P3D);
 
+  background(0);
+
   screen = createGraphics(height, height, P3D);
 
   oscListener = new OscListener(32000);
@@ -36,5 +38,24 @@ void setup () {
 void draw () {
   background(0);
   stroke(255);
-  archive.debug();
+
+  // archive.debug();
+
+  pushMatrix();
+  translate(width/2, height/2);
+  for (Speaker s : speakers) {
+    s.draw();
+  }
+  popMatrix();
+}
+
+int getSpeakerIndexFromId (String id) {
+  int index = 0;
+  for(int i = 0; i < speakers.size(); i++) {
+    if (id.equals(speakers.get(i).getId())) {
+      println("found index!", i);
+      index = i;
+    }
+  }
+  return index;
 }
