@@ -21,11 +21,16 @@ Word test_word;
 
 boolean ready = true; 
 
+int numVoices = 8;
+float blurAmount = 80;
+
+PShader blur;
+
 void setup () {
   size(displayWidth, displayHeight, P3D);
   // size(800, 600, P3D);
 
-  background(0);
+  blur = loadShader("blur.glsl");
 
   screen = createGraphics(height, height, P3D);
 
@@ -37,25 +42,39 @@ void setup () {
   ellipseMode(RADIUS);
 
   test_word = archive.getWord("");
+
+  background(0);
 }
 
 void draw () {
-  background(0);
-  stroke(255);
-
-  // archive.debug();
-
-  pushMatrix();
-  translate(width/2, height/2);
+  screen.beginDraw();
+  screen.filter(blur);
+  screen.fill(0, blurAmount);
+  screen.rect(-1, -1, screen.width + 2, screen.height + 2);
+  screen.stroke(255);
+  screen.pushMatrix();
+  screen.translate(screen.width/2, screen.height/2);
   for (Speaker s : speakers) {
     s.draw();
   }
-  popMatrix();
+  screen.popMatrix();
+  screen.endDraw();
+  image(screen, 0, 0);
 }
 
 int getSpeakerIndexFromId (String id) {
   for(int i = 0; i < speakers.size(); i++) {
     if (id.equals(speakers.get(i).id)) {
+      return i;
+    }
+  }
+  return 0;
+}
+
+int getSpeakerIndexFromVoiceIndex (int voice_index) {
+  for(int i = 0; i < speakers.size(); i++) {
+    println("voice_index", speakers.get(i).voiceIndex, voice_index);
+    if (voice_index == speakers.get(i).voiceIndex) {
       return i;
     }
   }

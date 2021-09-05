@@ -9,6 +9,8 @@ class Word {
   int h;
   boolean isLoaded = false; 
 
+  float gaussianRadius = 30;
+
   Word (JSONObject audio) {
     // word
     audio_id = audio.getString("id");
@@ -27,7 +29,7 @@ class Word {
     JSONArray jsonPoints = wordData.getJSONArray("points");
     w = wordData.getInt("width");
     h = wordData.getInt("height");
-    for (int i = 0; i < jsonPoints.size(); i++) {
+    for (int i = 0; i < jsonPoints.size()-1; i+=2) {
       JSONObject posObj = jsonPoints.getJSONObject(i);
       float x = posObj.getFloat("x");
       float y = posObj.getFloat("y");
@@ -41,20 +43,21 @@ class Word {
   void drawDebug (float scale) {
     if (!isLoaded) return; 
     for (PVector point : points) {
-      point(point.x * scale, point.y * scale);
+      screen.point(point.x * scale, point.y * scale);
     }
   }
 
-  void draw (float theta, float radius) {
-  float circ = TWO_PI * radius;
-  float segment_angle = (w / circ) * TWO_PI;
-   for (PVector point : points) {
+  void draw (float theta, float radius, float reverb) {
+    float circ = TWO_PI * radius;
+    float segment_angle = (w / circ) * TWO_PI;
+    for (PVector point : points) {
       float angle = (segment_angle / w) * point.x + (theta - segment_angle/2);
       float r = radius - point.y + h/2;
       float posx = cos(angle) * r;
       float posy = sin(angle) * r;
-      
-      rect(posx, posy, 1, 1);
+      posx = posx + randomGaussian() * gaussianRadius * reverb;
+      posy = posy + randomGaussian() * gaussianRadius * reverb;
+      screen.ellipse(posx, posy, 1, 1);
     }
   }
 

@@ -26,12 +26,17 @@ class OscListener {
       onEndMessage(theOscMessage);
       return;
     }
+
+    if (theOscMessage.checkAddrPattern("/reverb")==true) {
+      onReverbMessage(theOscMessage);
+      return;
+    }
   }
 
   void onPosMessage (OscMessage theOscMessage) {
     int index = theOscMessage.get(0).intValue();
     float theta = theOscMessage.get(1).floatValue();
-    float radius = theOscMessage.get(2).floatValue() * height; 
+    float radius = theOscMessage.get(2).floatValue() * height * 2; 
     // set speaker position
     speakers.get(index).updatePos(theta, radius);
     return;
@@ -41,12 +46,14 @@ class OscListener {
   void onPlayMessage(OscMessage theOscMessage) {
     String speaker_id = theOscMessage.get(0).stringValue();
     String audio_id = theOscMessage.get(1).stringValue();
+    int voice_index = theOscMessage.get(2).intValue();
     // String word = URLDecoder.decode(theOscMessage.get(2).stringValue());
     Word word = archive.getWord(audio_id);
     // get speaker index
     int index = getSpeakerIndexFromId(speaker_id);
     println("/play", speaker_id, audio_id, index);
     // show word
+    speakers.get(index).setVoiceIndex(voice_index);
     speakers.get(index).appearWord(word);
   }
 
@@ -62,7 +69,10 @@ class OscListener {
   }
 
   // String audio_id, String fx_type, float fx_value int voice_index
-  void onFxMessage (OscMessage theOscMessage) {
-
+  void onReverbMessage (OscMessage theOscMessage) {
+    String speaker_id = theOscMessage.get(0).stringValue();
+    float value = theOscMessage.get(1).floatValue();
+    int index = getSpeakerIndexFromId(speaker_id);
+    speakers.get(index).setReverb(value);
   }
 }

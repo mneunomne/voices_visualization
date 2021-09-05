@@ -2,6 +2,7 @@ class Speaker {
   String id; 
   int index;
   Word curWord;
+  int voiceIndex;
   // movement data
   float curPosX;
   float curPosY;
@@ -10,6 +11,8 @@ class Speaker {
   float posX = 0;
   float posY = 0;
   float theta, radius;
+  // effects
+  float reverb = 0;
   // states 
   boolean loaded = false;
   boolean showWord = false;
@@ -44,6 +47,14 @@ class Speaker {
     curWord = word; 
   }
 
+  void setVoiceIndex (int index) {
+    voiceIndex = index;
+  }
+
+  void setReverb (float value) {
+    reverb = value;
+  }
+
   void hide () {
     showWord = false;
   }
@@ -56,15 +67,14 @@ class Speaker {
     theta = theta + (curTheta - theta) * 0.1;
     radius = radius + (curRadius - radius) * 0.1;
 
-    noFill();
-    stroke(0, 0, 125);
-    ellipse(0, 0, radius, radius);
-    stroke(255);
+    // screen.noFill();
+    // screen.stroke(0, 0, 125);
+    // screen.ellipse(0, 0, radius, radius);
 
     if (showWord) {
-      curWord.draw(theta, radius);
+      curWord.draw(theta, radius, reverb);
     } else {
-      ellipse(curPosX, curPosY, 5, 5);
+      screen.ellipse(curPosX, curPosY, 5, 5);
     }
   }
 }
