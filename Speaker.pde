@@ -2,20 +2,20 @@ class Speaker {
   String id; 
   int index;
   Word curWord;
-  boolean showText = false;
+  // movement data
   float curPosX;
   float curPosY;
   float curTheta;
   float curRadius; 
   float posX = 0;
   float posY = 0;
-  float theta, radius; 
+  float theta, radius;
+  // states 
   boolean loaded = false;
   boolean showWord = false;
-  Speaker (String id, int index) {
-    // speaker
-    id = id;
-    index = index;
+  Speaker (String _id, int _index) {
+    id = _id;
+    index = _index;
   }
 
   void updatePos (float _theta, float _radius) {
@@ -45,7 +45,7 @@ class Speaker {
   }
 
   void hide () {
-    
+    showWord = false;
   }
 
   void draw () {
@@ -55,6 +55,11 @@ class Speaker {
     
     theta = theta + (curTheta - theta) * 0.1;
     radius = radius + (curRadius - radius) * 0.1;
+
+    noFill();
+    stroke(0, 0, 125);
+    ellipse(0, 0, radius, radius);
+    stroke(255);
 
     if (showWord) {
       curWord.draw(theta, radius);

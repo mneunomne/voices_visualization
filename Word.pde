@@ -49,10 +49,10 @@ class Word {
   float circ = TWO_PI * radius;
   float segment_angle = (w / circ) * TWO_PI;
    for (PVector point : points) {
-      float angle = (segment_angle / w) * point.x + theta;
-      float r = radius - point.y;
-      float posx = cos(theta) * r;
-      float posy = sin(theta) * r;
+      float angle = (segment_angle / w) * point.x + (theta - segment_angle/2);
+      float r = radius - point.y + h/2;
+      float posx = cos(angle) * r;
+      float posy = sin(angle) * r;
       
       rect(posx, posy, 1, 1);
     }

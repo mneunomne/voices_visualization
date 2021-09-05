@@ -19,6 +19,8 @@ OscListener oscListener;
 
 Word test_word; 
 
+boolean ready = true; 
+
 void setup () {
   size(displayWidth, displayHeight, P3D);
   // size(800, 600, P3D);
@@ -31,6 +33,8 @@ void setup () {
 
   archive = new Archive();
   archive.load();
+
+  ellipseMode(RADIUS);
 
   test_word = archive.getWord("");
 }
@@ -50,12 +54,10 @@ void draw () {
 }
 
 int getSpeakerIndexFromId (String id) {
-  int index = 0;
   for(int i = 0; i < speakers.size(); i++) {
-    if (id.equals(speakers.get(i).getId())) {
-      println("found index!", i);
-      index = i;
+    if (id.equals(speakers.get(i).id)) {
+      return i;
     }
   }
-  return index;
+  return 0;
 }

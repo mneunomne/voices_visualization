@@ -5,44 +5,64 @@ class OscListener {
   }
 
   void oscEvent(OscMessage theOscMessage) {
-    if (speakers.size() == 0) return;
+    if (!ready) return;
 
     /* get and print the address pattern and the typetag of the received OscMessage */
     // println("### received an osc message with addrpattern "+theOscMessage.addrPattern()+" and typetag "+theOscMessage.typetag());
     // theOscMessage.print();
     
     if (theOscMessage.checkAddrPattern("/pos")==true) {
-      int index = theOscMessage.get(0).intValue();
-      float theta = theOscMessage.get(1).floatValue();
-      float radius = theOscMessage.get(2).floatValue() * height; 
-      // set speaker position
-      speakers.get(index).updatePos(theta, radius);
+      onPosMessage(theOscMessage);
       return;
     }
 
     
     if (theOscMessage.checkAddrPattern("/play")==true) {
-      String speaker_id = theOscMessage.get(0).stringValue();
-      
-      String audio_id = theOscMessage.get(1).stringValue();
-      // String word = URLDecoder.decode(theOscMessage.get(2).stringValue());
-      Word word = archive.getWord(audio_id);
-      // get speaker index
-      int index = getSpeakerIndexFromId(speaker_id);
-      // show word
-      speakers.get(index).appearWord(word);
+      onPlayMessage(theOscMessage);
       return;
     }
     
     if (theOscMessage.checkAddrPattern("/end")==true) {
-      String speaker_id = theOscMessage.get(0).stringValue();
-      // int audio_id = theOscMessage.get(1).intValue();
-      // get speaker index
-      int index = getSpeakerIndexFromId(speaker_id);
-      // hide word
-      // println("end", index);
-      speakers.get(index).hide();
+      onEndMessage(theOscMessage);
       return;
     }
+  }
+
+  void onPosMessage (OscMessage theOscMessage) {
+    int index = theOscMessage.get(0).intValue();
+    float theta = theOscMessage.get(1).floatValue();
+    float radius = theOscMessage.get(2).floatValue() * height; 
+    // set speaker position
+    speakers.get(index).updatePos(theta, radius);
+    return;
+  }
+
+  // String speaker_id, String audio_id, int voice_index 
+  void onPlayMessage(OscMessage theOscMessage) {
+    String speaker_id = theOscMessage.get(0).stringValue();
+    String audio_id = theOscMessage.get(1).stringValue();
+    // String word = URLDecoder.decode(theOscMessage.get(2).stringValue());
+    Word word = archive.getWord(audio_id);
+    // get speaker index
+    int index = getSpeakerIndexFromId(speaker_id);
+    println("/play", speaker_id, audio_id, index);
+    // show word
+    speakers.get(index).appearWord(word);
+  }
+
+  // String speaker_id, int voice_index 
+  void onEndMessage(OscMessage theOscMessage) {
+    String speaker_id = theOscMessage.get(0).stringValue();
+    // int audio_id = theOscMessage.get(1).intValue();
+    // get speaker index
+    int index = getSpeakerIndexFromId(speaker_id);
+    // hide word
+    // println("end", index);
+    speakers.get(index).hide();
+  }
+
+  // String audio_id, String fx_type, float fx_value int voice_index
+  void onFxMessage (OscMessage theOscMessage) {
+
   }
 }
