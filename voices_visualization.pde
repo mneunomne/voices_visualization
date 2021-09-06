@@ -80,3 +80,7 @@ int getSpeakerIndexFromVoiceIndex (int voice_index) {
   }
   return 0;
 }
+
+void setBlur (float value) {
+  blurAmount = value;
+}

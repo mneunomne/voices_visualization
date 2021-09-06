@@ -29,7 +29,7 @@ class Word {
     JSONArray jsonPoints = wordData.getJSONArray("points");
     w = wordData.getInt("width");
     h = wordData.getInt("height");
-    for (int i = 0; i < jsonPoints.size()-1; i+=2) {
+    for (int i = 0; i < jsonPoints.size()-2; i+=3) {
       JSONObject posObj = jsonPoints.getJSONObject(i);
       float x = posObj.getFloat("x");
       float y = posObj.getFloat("y");
@@ -57,7 +57,8 @@ class Word {
       float posy = sin(angle) * r;
       posx = posx + randomGaussian() * gaussianRadius * reverb;
       posy = posy + randomGaussian() * gaussianRadius * reverb;
-      screen.ellipse(posx, posy, 1, 1);
+      strokeWeight(3);
+      screen.point(posx, posy);
     }
   }
 
