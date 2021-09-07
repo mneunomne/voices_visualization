@@ -44,7 +44,8 @@ class OscListener {
   void onPosMessage (OscMessage theOscMessage) {
     int index = theOscMessage.get(0).intValue();
     float theta = theOscMessage.get(1).floatValue();
-    float radius = theOscMessage.get(2).floatValue() * height * 2; 
+    float radius = theOscMessage.get(2).floatValue() * height * 2;
+    println(index, theta, radius);
     // set speaker position
     speakers.get(index).updatePos(theta, radius);
     return;

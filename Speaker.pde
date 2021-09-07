@@ -67,8 +67,8 @@ class Speaker {
     theta = theta + (curTheta - theta) * 0.1;
     radius = radius + (curRadius - radius) * 0.1;
 
-    // screen.noFill();
-    // screen.stroke(0, 0, 125);
+    screen.noFill();
+    screen.stroke(255);
     // screen.ellipse(0, 0, radius, radius);
 
     if (showWord) {

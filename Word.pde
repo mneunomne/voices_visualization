@@ -25,11 +25,18 @@ class Word {
     }
     points = new ArrayList<PVector>();
     // load json file data
+    String path = source_path + audio_id + ".json";
+    File f = dataFile(path);
+    boolean exist = f.isFile();
+    if (!exist) {
+      println("[Word] file doesnt exist, skipping", path);
+      return;
+    }
     JSONObject wordData = loadJSONObject(source_path + audio_id + ".json");
     JSONArray jsonPoints = wordData.getJSONArray("points");
     w = wordData.getInt("width");
     h = wordData.getInt("height");
-    for (int i = 0; i < jsonPoints.size()-2; i+=3) {
+    for (int i = 0; i < jsonPoints.size(); i++) {
       JSONObject posObj = jsonPoints.getJSONObject(i);
       float x = posObj.getFloat("x");
       float y = posObj.getFloat("y");
