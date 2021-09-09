@@ -18,18 +18,6 @@ class Archive {
     // save audio and user list locally
     audios = json.getJSONArray("audios");
     users = json.getJSONArray("users");
-
-    // create .json points for each word in database
-    for (int i = 0; i < audios.size(); i++) {    
-      JSONObject audio = audios.getJSONObject(i);
-      String text = audio.getString("text");
-      // create words only for audio with text
-      if (text.length() > 0) {
-        Word word = new Word(audio);
-        word.load();
-        words.add(word);
-      }
-    }
     
     // create the moving points for each user
     for (int i = 0; i < users.size(); i++) {    
@@ -39,6 +27,22 @@ class Archive {
       Speaker s = new Speaker(id, i);
       speakers.add(s);
     }
+
+     // create .json points for each word in database
+    for (int i = 0; i < audios.size(); i++) {
+      JSONObject audio = audios.getJSONObject(i);
+      String text = audio.getString("text");
+      String id = audio.getString("id");
+      int index = getSpeakerIndexFromId(id);
+      Speaker s = speakers.get(index);
+      // create words only for audio with text
+      if (text.length() > 0) {
+        Word word = new Word(audio, s);
+        word.load();
+        words.add(word);
+      }
+    }
+
     println("[ArchiveVis] Loaded database with " + audios.size() + " audios");
     // loaded!
   }
@@ -47,8 +51,11 @@ class Archive {
     audios.append(new_audio_data);
     println("[ArchiveVis] New audio data appended, with now " + audios.size() + " audios");
     // create points json file for new audio...
-
-    Word word = new Word(new_audio_data);
+    
+    String id = new_audio_data.getString("id");
+    int index = getSpeakerIndexFromId(id);
+    Speaker s = speakers.get(index);
+    Word word = new Word(new_audio_data, s);
     words.add(word);
     word.load();
   }

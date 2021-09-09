@@ -15,13 +15,16 @@ class Word {
 
   float gaussianRadius = 30;
 
-  boolean show = false; 
+  boolean show = false;
 
-  Word (JSONObject audio) {
+  Speaker mySpeaker;
+
+  Word (JSONObject audio, Speaker s) {
     // word
     audio_id = audio.getString("id");
     user_id = audio.getString("user_id");
     text = audio.getString("text");
+    mySpeaker = s;
   }
 
   void load () {
@@ -56,6 +59,7 @@ class Word {
   void show () {
     startTransitionTime = millis();
     show = true;
+    gaussianRadius = random(10, 50);
   }
 
   void hide () {
@@ -73,22 +77,29 @@ class Word {
 
     if (show) {
       int now = millis();
-      opacity = min(millis() - startTransitionTime, 1000)/1000;
-      println("opacity", opacity);
+      opacity = float(min(now - startTransitionTime, 1000))/1000;
+      if (opacity == 0) {
+        mySpeaker.hideWord();
+      }
     } else {
       return;
     }
 
     float circ = TWO_PI * radius;
     float segment_angle = (w / circ) * TWO_PI;
+    // println("opacity", opacity)
+    screen.stroke(255, 255 * opacity);
     for (PVector point : points) {
       float angle = (segment_angle / w) * point.x + (theta - segment_angle/2);
       float r = radius - point.y + h/2;
       float posx = cos(angle) * r;
       float posy = sin(angle) * r;
-      posx = posx + randomGaussian() * gaussianRadius * reverb;
-      posy = posy + randomGaussian() * gaussianRadius * reverb;
-      strokeWeight(3);
+      float noiseX = randomGaussian() * gaussianRadius * (1 - opacity);
+      float noiseY = randomGaussian() * gaussianRadius * (1 - opacity);
+
+      posx = posx + noiseX;
+      posy = posy + noiseY;
+      strokeWeight(2);
       screen.point(posx, posy);
     }
   }
