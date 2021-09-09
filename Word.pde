@@ -9,7 +9,13 @@ class Word {
   int h;
   boolean isLoaded = false; 
 
+  float opacity = 0;
+  int startTransitionTime = 0;
+  int transitionTime = 500;
+
   float gaussianRadius = 30;
+
+  boolean show = false; 
 
   Word (JSONObject audio) {
     // word
@@ -47,6 +53,15 @@ class Word {
     isLoaded = true;
   }
 
+  void show () {
+    startTransitionTime = millis();
+    show = true;
+  }
+
+  void hide () {
+    show = false; 
+  }
+
   void drawDebug (float scale) {
     if (!isLoaded) return; 
     for (PVector point : points) {
@@ -55,6 +70,15 @@ class Word {
   }
 
   void draw (float theta, float radius, float reverb) {
+
+    if (show) {
+      int now = millis();
+      opacity = min(millis() - startTransitionTime, 1000)/1000;
+      println("opacity", opacity);
+    } else {
+      return;
+    }
+
     float circ = TWO_PI * radius;
     float segment_angle = (w / circ) * TWO_PI;
     for (PVector point : points) {

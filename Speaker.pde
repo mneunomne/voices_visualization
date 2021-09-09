@@ -45,6 +45,7 @@ class Speaker {
     println("Show word!", word.text);
     showWord = true;
     curWord = word; 
+    curWord.show();
   }
 
   void setVoiceIndex (int index) {
@@ -57,24 +58,23 @@ class Speaker {
 
   void hide () {
     showWord = false;
+    curWord.hide();
   }
 
   void draw () {
     if (!loaded) return;
-    posX = posX + (curPosX - posX) * 0.1;
-    posY = posY + (curPosY - posY) * 0.1;
+    posX = posX + (curPosX - posX) * 0.01;
+    posY = posY + (curPosY - posY) * 0.01;
     
-    theta = theta + (curTheta - theta) * 0.1;
-    radius = radius + (curRadius - radius) * 0.1;
+    theta = theta + (curTheta - theta) * 0.01;
+    radius = radius + (curRadius - radius) * 0.01;
 
-    screen.noFill();
     screen.stroke(255);
+    screen.fill(255);
     // screen.ellipse(0, 0, radius, radius);
 
-    if (showWord) {
-      curWord.draw(theta, radius, reverb);
-    } else {
-      screen.ellipse(curPosX, curPosY, 5, 5);
-    }
+    curWord.draw(theta, radius, reverb);  
+    screen.ellipse(curPosX, curPosY, 5, 5);
+    
   }
 }

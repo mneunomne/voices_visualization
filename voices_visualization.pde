@@ -26,13 +26,15 @@ float blurAmount = 80;
 
 PShader blur;
 
+boolean debug_mode = true;
+
 void setup () {
-  size(displayWidth, displayHeight, P3D);
+  size(displayWidth, displayHeight, P2D);
   // size(800, 600, P3D);
 
   blur = loadShader("blur.glsl");
 
-  screen = createGraphics(height, height, P3D);
+  screen = createGraphics(height, height, P2D);
 
   oscListener = new OscListener(32000);
 
@@ -44,11 +46,12 @@ void setup () {
   test_word = archive.getWord("");
 
   background(0);
+
+  frameRate(30);
 }
 
 void draw () {
   screen.beginDraw();
-  screen.filter(blur);
   screen.fill(0, blurAmount);
   screen.rect(-1, -1, screen.width + 2, screen.height + 2);
   screen.stroke(255);
@@ -57,9 +60,17 @@ void draw () {
   for (Speaker s : speakers) {
     s.draw();
   }
+  screen.filter(blur);
   screen.popMatrix();
   screen.endDraw();
   image(screen, 0, 0);
+
+  if (debug_mode) debug();
+}
+
+void debug() {
+  fill(255);
+  text("fps: "+ frameRate, 10, 10);
 }
 
 int getSpeakerIndexFromId (String id) {

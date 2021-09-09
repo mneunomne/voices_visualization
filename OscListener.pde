@@ -5,7 +5,7 @@ class OscListener {
   }
 
   void oscEvent(OscMessage theOscMessage) {
-    if (!ready) return;
+    if (!ready || speakers.size() == 0) return;
 
     /* 
     get and print the address pattern and the typetag of the received OscMessage 
@@ -33,21 +33,23 @@ class OscListener {
       return;
     }
     
-   /*
+   
     if (theOscMessage.checkAddrPattern("/blur")==true) {
       onBlurMessage(theOscMessage);
       return;
     }
-    */
+   
   }
 
   void onPosMessage (OscMessage theOscMessage) {
     int index = theOscMessage.get(0).intValue();
     float theta = theOscMessage.get(1).floatValue();
     float radius = theOscMessage.get(2).floatValue() * height * 2;
-    println(index, theta, radius);
+    // println(index, theta, radius);
     // set speaker position
-    speakers.get(index).updatePos(theta, radius);
+    if (speakers.size() > 0) {
+      speakers.get(index).updatePos(theta, radius);
+    }
     return;
   }
 
