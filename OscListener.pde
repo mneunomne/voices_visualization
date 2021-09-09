@@ -38,7 +38,11 @@ class OscListener {
       onBlurMessage(theOscMessage);
       return;
     }
-   
+
+    if (theOscMessage.checkAddrPattern("/new_audio")==true) {
+      onNewAudio(theOscMessage);
+      return;
+    }
   }
 
   void onPosMessage (OscMessage theOscMessage) {
@@ -90,5 +94,12 @@ class OscListener {
   void onBlurMessage (OscMessage theOscMessage) {
     float value = theOscMessage.get(0).floatValue();
     setBlur(value);
+  }
+
+  void onNewAudio (OscMessage theOscMessage) {
+    String jsonString = theOscMessage.get(0).stringValue();
+    JSONObject audio_data = parseJSONObject(jsonString);
+    println("[OscListener] new audio!", audio_data);
+    archive.addNewAudio(audio_data);
   }
 }

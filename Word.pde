@@ -8,7 +8,6 @@ class Word {
   int w;
   int h;
   boolean isLoaded = false; 
-
   float opacity = 0;
   int startTransitionTime = 0;
   int transitionTime = 500;

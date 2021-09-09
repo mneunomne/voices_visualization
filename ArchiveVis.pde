@@ -51,13 +51,33 @@ class Archive {
     audios.append(new_audio_data);
     println("[ArchiveVis] New audio data appended, with now " + audios.size() + " audios");
     // create points json file for new audio...
-    
     String id = new_audio_data.getString("id");
-    int index = getSpeakerIndexFromId(id);
-    Speaker s = speakers.get(index);
+    // check if its new speaker, if it is, add it.
+    boolean is_new_speaker = isNewSpeaker(id);
+    Speaker s;
+    if (is_new_speaker) {
+      s = addNewSpeaker(id);
+    } else {
+      int index = getSpeakerIndexFromId(id);
+      s = speakers.get(index);
+    }
     Word word = new Word(new_audio_data, s);
     words.add(word);
     word.load();
+  }
+
+  boolean isNewSpeaker (String id) {
+    boolean hasFound = false;
+    for (Speaker s : speakers) {
+      hasFound = (s.id == id) || hasFound;
+    }
+    return hasFound; 
+  }
+
+  Speaker addNewSpeaker (String id) {
+    Speaker new_speaker = new Speaker(id, speakers.size());
+    speakers.add(new_speaker);
+    return new_speaker;
   }
 
   void firstLoad () {
