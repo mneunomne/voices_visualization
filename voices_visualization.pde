@@ -26,15 +26,16 @@ float blurAmount = 80;
 
 PShader blur;
 
-boolean debug_mode = true;
+boolean debug_mode = false;
 
 void setup () {
-  size(displayWidth, displayHeight, P2D);
+  size(displayWidth, displayHeight, P3D);
   // size(800, 600, P3D);
 
   blur = loadShader("blur.glsl");
-
-  screen = createGraphics(height, height, P2D);
+  ks = new Keystone(this);
+  screen = createGraphics(height, height, P3D);
+  surface = ks.createCornerPinSurface(height, height, 20);
 
   oscListener = new OscListener(32000);
 
@@ -48,6 +49,8 @@ void setup () {
   background(0);
 
   frameRate(30);
+
+  ks.load();
 }
 
 void draw () {
@@ -63,7 +66,9 @@ void draw () {
   screen.filter(blur);
   screen.popMatrix();
   screen.endDraw();
-  image(screen, 0, 0);
+  // image(screen, 0, 0);
+  background(0);
+  surface.render(screen);
 
   if (debug_mode) debug();
 }
@@ -94,4 +99,29 @@ int getSpeakerIndexFromVoiceIndex (int voice_index) {
 
 void setBlur (float value) {
   blurAmount = value;
+}
+
+void keyPressed () {
+  switch(key) {
+    case 'c':
+      // enter/leave calibration mode, where surfaces can be warped 
+      // and moved
+      ks.toggleCalibration();
+      break;
+    case 'l':
+      // loads the saved layout
+      ks.load();
+      break;
+    case 's':
+      // saves the layout
+      ks.save();
+      break;
+    case 'r':
+      background(0);
+      blur = loadShader("blur.glsl"); 
+      break;
+    case 'd':
+      debug_mode = !debug_mode;
+      break;
+  }
 }
