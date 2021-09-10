@@ -28,13 +28,18 @@ PShader blur;
 
 boolean debug_mode = true;
 
+boolean saveFrames = false;
+
+String session_id = "withtitle";
+
 void setup () {
-  size(displayWidth, displayHeight, P2D);
+  //size(displayWidth, displayHeight, P2D);
+  size(500, 700, P2D);
   // size(800, 600, P3D);
 
   blur = loadShader("blur.glsl");
 
-  screen = createGraphics(height, height, P2D);
+  screen = createGraphics(width, height, P2D);
 
   oscListener = new OscListener(32000);
 
@@ -47,7 +52,7 @@ void setup () {
 
   background(0);
 
-  frameRate(30);
+  frameRate(60);
 }
 
 void draw () {
@@ -64,6 +69,11 @@ void draw () {
   screen.popMatrix();
   screen.endDraw();
   image(screen, 0, 0);
+
+  if (saveFrames && frameCount % 3 == 0) {
+    saveFrame(session_id + "/image-####.jpg");
+    // saveFrames = false;
+  }
 
   if (debug_mode) debug();
 }
@@ -94,4 +104,10 @@ int getSpeakerIndexFromVoiceIndex (int voice_index) {
 
 void setBlur (float value) {
   blurAmount = value;
+}
+
+void keyPressed () {
+  if (key == 's') {
+    saveFrames = !saveFrames;
+  }
 }

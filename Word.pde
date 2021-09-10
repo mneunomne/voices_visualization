@@ -12,7 +12,7 @@ class Word {
   int startTransitionTime = 0;
   int transitionTime = 500;
 
-  float gaussianRadius = 30;
+  float gaussianRadius = 50;
 
   boolean show = false;
 
@@ -58,7 +58,7 @@ class Word {
   void show () {
     startTransitionTime = millis();
     show = true;
-    gaussianRadius = random(10, 50);
+    gaussianRadius = random(30, 70);
   }
 
   void hide () {
@@ -78,7 +78,7 @@ class Word {
       int now = millis();
       opacity = float(min(now - startTransitionTime, 1000))/1000;
       if (opacity == 0) {
-        mySpeaker.hideWord();
+        // mySpeaker.hideWord();
       }
     } else {
       return;
@@ -98,7 +98,7 @@ class Word {
 
       posx = posx + noiseX;
       posy = posy + noiseY;
-      strokeWeight(2);
+      strokeWeight(3);
       screen.point(posx, posy);
     }
   }

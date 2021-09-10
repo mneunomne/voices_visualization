@@ -23,7 +23,7 @@ class Speaker {
 
   void updatePos (float _theta, float _radius) {
     // println("updatePos!", theta, radius);
-    _radius = _radius * (height/ (2 * 6));
+    _radius = _radius * (1000/ (2 * 6));
     loaded = true;
     curTheta = _theta;
     curRadius = _radius;
@@ -49,7 +49,7 @@ class Speaker {
   }
 
   void hideWord () {
-    showWord = false;
+    // showWord = false;
   }
 
   void setVoiceIndex (int index) {
@@ -67,11 +67,11 @@ class Speaker {
 
   void draw () {
     if (!loaded) return;
-    posX = posX + (curPosX - posX) * 0.01;
-    posY = posY + (curPosY - posY) * 0.01;
+    posX = posX + (curPosX - posX) * 0.05;
+    posY = posY + (curPosY - posY) * 0.05;
     
-    theta = theta + (curTheta - theta) * 0.01;
-    radius = radius + (curRadius - radius) * 0.01;
+    theta = theta + (curTheta - theta) *  0.05;
+    radius = radius + (curRadius - radius) *  0.05;
 
     screen.stroke(255);
     screen.fill(255);
@@ -79,7 +79,7 @@ class Speaker {
     if (showWord) {
       curWord.draw(theta, radius, reverb);  
     } else {
-      screen.ellipse(curPosX, curPosY, 5, 5);
+      screen.ellipse(curPosX, curPosY, 1, 1);
     }
     
   }
