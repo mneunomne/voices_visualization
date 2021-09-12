@@ -14,15 +14,20 @@ class Word {
   float gaussianRadius = 30;
 
   boolean show = false;
-
+  boolean hideTransition = false;
   Speaker mySpeaker;
 
-  Word (JSONObject audio, Speaker s) {
+  int speaker_index;
+
+  boolean hideFull = false;
+
+  Word (JSONObject audio, Speaker s, int _speaker_index) {
     // word
     audio_id = audio.getString("id");
     user_id = audio.getString("user_id");
     text = audio.getString("text");
     mySpeaker = s;
+    _speaker_index = speaker_index;
   }
 
   void load () {
@@ -61,7 +66,8 @@ class Word {
   }
 
   void hide () {
-    show = false; 
+    show = false;
+    startTransitionTime = millis();
   }
 
   void drawDebug (float scale) {
@@ -76,11 +82,13 @@ class Word {
     if (show) {
       int now = millis();
       opacity = float(min(now - startTransitionTime, 1000))/1000;
-      if (opacity == 0) {
-        mySpeaker.hideWord();
-      }
     } else {
-      return;
+      int now = millis();
+      opacity = 1 - float(min(now - startTransitionTime, 1000))/1000;
+      println("opacity", opacity, opacity == 0.0);
+      if (opacity == 0.0) {
+        speakers.get(speaker_index).hideWord();
+      }
     }
 
     float circ = TWO_PI * radius;
@@ -97,7 +105,7 @@ class Word {
 
       posx = posx + noiseX;
       posy = posy + noiseY;
-      strokeWeight(2);
+      strokeWeight(1);
       screen.point(posx, posy);
     }
   }

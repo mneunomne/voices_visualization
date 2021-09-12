@@ -50,6 +50,7 @@ class Speaker {
 
   void hideWord () {
     showWord = false;
+    println("hideWord");
   }
 
   void setVoiceIndex (int index) {
@@ -61,7 +62,7 @@ class Speaker {
   }
 
   void hide () {
-    showWord = false;
+    // showWord = false;
     curWord.hide();
   }
 
@@ -78,9 +79,9 @@ class Speaker {
     // screen.ellipse(0, 0, radius, radius);
     if (showWord) {
       curWord.draw(theta, radius, reverb);  
-    } else {
-      screen.ellipse(curPosX, curPosY, 5, 5);
     }
+     
+    screen.ellipse(curPosX, curPosY, 1, 1);
     
   }
 }

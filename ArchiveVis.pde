@@ -37,7 +37,7 @@ class Archive {
       Speaker s = speakers.get(index);
       // create words only for audio with text
       if (text.length() > 0) {
-        Word word = new Word(audio, s);
+        Word word = new Word(audio, s, index);
         word.load();
         words.add(word);
       }
@@ -55,13 +55,15 @@ class Archive {
     // check if its new speaker, if it is, add it.
     boolean is_new_speaker = isNewSpeaker(id);
     Speaker s;
+    int index = 0;
     if (is_new_speaker) {
       s = addNewSpeaker(id);
+      index = words.size();
     } else {
-      int index = getSpeakerIndexFromId(id);
+      index = getSpeakerIndexFromId(id);
       s = speakers.get(index);
     }
-    Word word = new Word(new_audio_data, s);
+    Word word = new Word(new_audio_data, s, index);
     words.add(word);
     word.load();
   }
