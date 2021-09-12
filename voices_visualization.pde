@@ -28,16 +28,26 @@ PShader blur;
 
 boolean debug_mode = false;
 
+JSONObject config;
+
+int osc_port;
+String points_path = "/Users/hfkmacmini/voices_controller/data/points/";
+
 void setup () {
   size(displayWidth, displayHeight, P3D);
   // size(800, 600, P3D);
+
+  // load config
+  config = loadJSONObject("data/config.json");
+  points_path = config.getString("points_path");
+  osc_port = config.getInt("osc_port");
 
   blur = loadShader("blur.glsl");
   ks = new Keystone(this);
   screen = createGraphics(height, height, P3D);
   surface = ks.createCornerPinSurface(height, height, 20);
 
-  oscListener = new OscListener(32000);
+  oscListener = new OscListener(osc_port);
 
   archive = new Archive();
   archive.load();

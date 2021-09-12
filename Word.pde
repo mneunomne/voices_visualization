@@ -1,5 +1,4 @@
 class Word {
-  String source_path = "C:/Users/mneunomne/Documents/Processing/voices_controller/data/points/";
   String audio_id;
   String user_id;
   String text;
@@ -33,14 +32,14 @@ class Word {
     }
     points = new ArrayList<PVector>();
     // load json file data
-    String path = source_path + audio_id + ".json";
+    String path = points_path + audio_id + ".json";
     File f = dataFile(path);
     boolean exist = f.isFile();
     if (!exist) {
       println("[Word] file doesnt exist, skipping", path);
       return;
     }
-    JSONObject wordData = loadJSONObject(source_path + audio_id + ".json");
+    JSONObject wordData = loadJSONObject(points_path + audio_id + ".json");
     JSONArray jsonPoints = wordData.getJSONArray("points");
     w = wordData.getInt("width");
     h = wordData.getInt("height");
