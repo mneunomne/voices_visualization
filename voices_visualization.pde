@@ -36,8 +36,8 @@ String points_path = "/Users/hfkmacmini/voices_controller/data/points/";
 boolean is_fullscreen;
 
 void setup () {
-  size(displayWidth, displayHeight, P3D);
-  // fullScreen(P3D, 1);
+  // size(displayWidth, displayHeight, P3D);
+  fullScreen(P3D, 2);
   // size(800, 600, P3D);
 
   // load config
@@ -81,8 +81,8 @@ void draw () {
   screen.filter(blur);
   if (debug_mode) {
     screen.noFill();
-    screen.stroke(0, 0, 255);
-    screen.strokeWeight(2);
+    screen.stroke(255);
+    screen.strokeWeight(3);
     screen.ellipse(0, 0, screen.height, screen.height);
     screen.line(0, -screen.height/2, 0, screen.height/2);
     screen.line(-screen.height/2, 0, screen.height/2, 0);

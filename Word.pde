@@ -85,7 +85,6 @@ class Word {
     } else {
       int now = millis();
       opacity = 1 - float(min(now - startTransitionTime, 1000))/1000;
-      println("opacity", opacity, opacity == 0.0);
       if (opacity == 0.0) {
         speakers.get(speaker_index).hideWord();
       }

@@ -1,5 +1,5 @@
 {
     "osc_port": 32000,
-    "points_path": "/Users/hfkmacmini/voices_controller/data/points/",
-    "fullscreen": 0
+    "points_path": "C:/Users/mneunomne/Documents/Processing/voices_controller/data/points/",
+    "is_fullscreen": true
 }
