@@ -5,7 +5,7 @@ class OscListener {
   }
 
   void oscEvent(OscMessage theOscMessage) {
-    if (!ready || speakers.size() == 0) return;
+    if (speakers.size() == 0) return;
 
     /* 
     get and print the address pattern and the typetag of the received OscMessage 
@@ -41,6 +41,7 @@ class OscListener {
 
     if (theOscMessage.checkAddrPattern("/new_audio")==true) {
       onNewAudio(theOscMessage);
+      theOscMessage.print();
       return;
     }
   }
@@ -66,7 +67,7 @@ class OscListener {
     Word word = archive.getWord(audio_id);
     // get speaker index
     int index = getSpeakerIndexFromId(speaker_id);
-    println("/play", speaker_id, audio_id, index);
+    // println("/play", speaker_id, audio_id, index);
     // show word
     speakers.get(index).setVoiceIndex(voice_index);
     speakers.get(index).appearWord(word);

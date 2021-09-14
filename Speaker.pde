@@ -42,7 +42,7 @@ class Speaker {
   }
 
   void appearWord (Word word) {
-    println("Show word!", word.text);
+    // println("Show word!", word.text, id, index);
     showWord = true;
     curWord = word;
     curWord.show();
@@ -50,7 +50,6 @@ class Speaker {
 
   void hideWord () {
     showWord = false;
-    println("hideWord");
   }
 
   void setVoiceIndex (int index) {
@@ -68,11 +67,11 @@ class Speaker {
 
   void draw () {
     if (!loaded) return;
-    posX = posX + (curPosX - posX) * 0.01;
-    posY = posY + (curPosY - posY) * 0.01;
+    posX = posX + (curPosX - posX) * 0.1;
+    posY = posY + (curPosY - posY) * 0.1;
     
-    theta = theta + (curTheta - theta) * 0.01;
-    radius = radius + (curRadius - radius) * 0.01;
+    theta = theta + (curTheta - theta) * 0.1;
+    radius = radius + (curRadius - radius) * 0.1;
 
     screen.stroke(255);
     screen.fill(255);

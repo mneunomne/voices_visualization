@@ -25,6 +25,7 @@ class Archive {
       String name = user.getString("name");
       String id = user.getString("id");
       Speaker s = new Speaker(id, i);
+      println("add speaker", name, i);
       speakers.add(s);
     }
 
