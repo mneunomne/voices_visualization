@@ -16,6 +16,7 @@ class Speaker {
   // states 
   boolean loaded = false;
   boolean showWord = false;
+  boolean hasCurWord = false;
   Speaker (String _id, int _index) {
     id = _id;
     index = _index;
@@ -43,9 +44,19 @@ class Speaker {
 
   void appearWord (Word word) {
     // println("Show word!", word.text, id, index);
+    float opacity = 0.0;
+    int startTransitionTime = millis();
+    if (hasCurWord) {
+      if (curWord.show) {
+        opacity = curWord.opacity;
+        startTransitionTime = curWord.startTransitionTime;
+      }
+      curWord.reset();
+    }
     showWord = true;
     curWord = word;
-    curWord.show();
+    curWord.show(opacity, startTransitionTime);
+    hasCurWord = true;
   }
 
   void hideWord () {
@@ -76,6 +87,9 @@ class Speaker {
     screen.stroke(255);
     screen.fill(255);
     // screen.ellipse(0, 0, radius, radius);
+    if (hasCurWord) {
+      curWord.update();
+    }
     if (showWord) {
       curWord.draw(theta, radius, reverb);  
     }

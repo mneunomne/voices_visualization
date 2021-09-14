@@ -19,7 +19,7 @@ class Word {
 
   int speaker_index;
 
-  boolean hideFull = false;
+  boolean hide = false;
 
   Word (JSONObject audio, Speaker s, int _speaker_index) {
     // word
@@ -59,14 +59,25 @@ class Word {
     isLoaded = true;
   }
 
-  void show () {
-    startTransitionTime = millis();
-    show = true;
-    gaussianRadius = random(10, 50);
+  void show (float _opacity, int _startTransitionTime) {
+    startTransitionTime = _startTransitionTime;
+    opacity = _opacity;
+    if (!show) {
+      show = true;
+      hide = false;
+      gaussianRadius = 30;
+    }
+  }
+
+  void reset () {
+    startTransitionTime = 0;
+    show = false; 
+    opacity = 0.0;
   }
 
   void hide () {
     show = false;
+    hide = true;
     startTransitionTime = millis();
   }
 
@@ -77,18 +88,21 @@ class Word {
     }
   }
 
-  void draw (float theta, float radius, float reverb) {
-
+  void update () {
     if (show) {
       int now = millis();
       opacity = float(min(now - startTransitionTime, 1000))/1000;
     } else {
       int now = millis();
       opacity = 1 - float(min(now - startTransitionTime, 1000))/1000;
-      if (opacity == 0.0) {
+      if (opacity == 0.0 && hide) {
+        hide = false;
         speakers.get(speaker_index).hideWord();
       }
     }
+  }
+
+  void draw (float theta, float radius, float reverb) {
 
     float circ = TWO_PI * radius;
     float segment_angle = (w / circ) * TWO_PI;
