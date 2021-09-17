@@ -15,18 +15,16 @@ class Word {
 
   boolean show = false;
   boolean hideTransition = false;
-  Speaker mySpeaker;
 
   int speaker_index;
 
   boolean hide = false;
 
-  Word (JSONObject audio, Speaker s, int _speaker_index) {
+  Word (JSONObject audio, int _speaker_index) {
     // word
     audio_id = audio.getString("id");
     user_id = audio.getString("user_id");
     text = audio.getString("text");
-    mySpeaker = s;
     _speaker_index = speaker_index;
   }
 

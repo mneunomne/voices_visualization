@@ -35,10 +35,9 @@ class Archive {
       String text = audio.getString("text");
       String id = audio.getString("id");
       int index = getSpeakerIndexFromId(id);
-      Speaker s = speakers.get(index);
       // create words only for audio with text
       if (text.length() > 0) {
-        Word word = new Word(audio, s, index);
+        Word word = new Word(audio, index);
         word.load();
         words.add(word);
       }
@@ -49,22 +48,22 @@ class Archive {
   }
 
   void addNewAudio (JSONObject new_audio_data) {
-    audios.append(new_audio_data);
+    audios.append(new_audio_data); //<>//
     println("[ArchiveVis] New audio data appended, with now " + audios.size() + " audios");
     // create points json file for new audio...
     String id = new_audio_data.getString("id");
     // check if its new speaker, if it is, add it.
     boolean is_new_speaker = isNewSpeaker(id);
-    Speaker s;
     int index = 0;
     if (is_new_speaker) {
-      s = addNewSpeaker(id);
-      index = words.size();
+      index = 0;
+      // hasNewUser = true;
+      // newSpeaker = new Speaker(id, index);
+      // addNewSpeaker(new_audio_data);
     } else {
       index = getSpeakerIndexFromId(id);
-      s = speakers.get(index);
     }
-    Word word = new Word(new_audio_data, s, index);
+    Word word = new Word(new_audio_data, index);
     words.add(word);
     word.load();
   }
@@ -72,17 +71,17 @@ class Archive {
   boolean isNewSpeaker (String id) {
     boolean hasFound = false;
     for (Speaker s : speakers) {
-      hasFound = (s.id == id) || hasFound;
+      hasFound = (id.equals(s.id)) || hasFound;
     }
-    return hasFound; 
+    return !hasFound; 
   }
-
+/*
   Speaker addNewSpeaker (String id) {
     Speaker new_speaker = new Speaker(id, speakers.size());
     speakers.add(new_speaker);
     return new_speaker;
   }
-
+*/
   void firstLoad () {
     for (Word word : words) {
       word.load();

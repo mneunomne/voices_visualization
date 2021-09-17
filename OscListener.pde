@@ -69,7 +69,7 @@ class OscListener {
     int index = getSpeakerIndexFromId(speaker_id);
     // println("/play", speaker_id, audio_id, index);
     // show word
-    speakers.get(index).setVoiceIndex(voice_index);
+    speakers.get(index).setVoiceIndex(index);
     speakers.get(index).appearWord(word);
   }
 

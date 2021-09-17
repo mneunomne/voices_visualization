@@ -35,6 +35,9 @@ String points_path = "/Users/hfkmacmini/voices_controller/data/points/";
 
 boolean is_fullscreen;
 
+boolean hasNewUser = false;
+Speaker newSpeaker;
+
 void setup () {
   // size(displayWidth, displayHeight, P3D);
   fullScreen(P3D, 2);
@@ -69,6 +72,12 @@ void setup () {
 }
 
 void draw () {
+  if (hasNewUser) {
+    speakers.add(newSpeaker);
+    hasNewUser =false;
+  }
+
+
   screen.beginDraw();
   screen.fill(0, blurAmount);
   screen.rect(-1, -1, screen.width + 2, screen.height + 2);
